@@ -11,7 +11,7 @@ services:
       ports:
         - "3306:3306"
       networks:
-        - default
+        - mynetwork
     wordpress:
       container_name: wordpress
       build:
@@ -26,9 +26,10 @@ services:
       volumes:
         - wordpress_data:/var/www/html
       networks:
-        - default
+        - mynetwork
     nginx:
       container_name: nginx
+      hostname: localhost
       depends_on:
         - wordpress
       build:
@@ -37,9 +38,9 @@ services:
       ports:
         - "443:443"
       volumes:
-        - wordpress_data:/var/www/html
+        - wordpress_data:/var/www/html:ro
       networks:
-        - default
+        - mynetwork
 
 volumes:
   wordpress_data:
@@ -56,5 +57,5 @@ volumes:
       device: /home/eduarodr/data/db_data
 
 networks:
-  default:
+  mynetwork:
     driver: bridge
